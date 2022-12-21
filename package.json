@@ -3,6 +3,12 @@
   "displayName": "simone-for-vscode",
   "description": "scripting interface for the simone engine",
   "version": "0.0.1",
+  "publisher": "EMicklei",  
+  "license": "SEE LICENSE IN LICENSE.txt",  
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emicklei/simone-for-vscode.git"
+  },  
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -16,7 +22,7 @@
   "contributes": {
     "languages": [
       {
-        "id": "simone",
+        "id": "javascript",
         "extensions": [
           ".sim"
         ],
@@ -63,8 +69,8 @@
       },
       {
         "command": "simone-for-vscode.evalAndInspect",
-        "key": "ctrl+2",
-        "mac": "cmd+2"
+        "key": "ctrl+q",
+        "mac": "ctrl+q"
       }
     ]
   },

@@ -51,7 +51,7 @@ function evalWithAction(action: string) {
 		// not in editor
 		return;
 	}
-	if (activeEditor.document.languageId !== "simone") {
+	if (activeEditor.document.languageId !== "javascript") {
 		// not a Melrose file
 		console.log("not a Simone script");
 		return;
