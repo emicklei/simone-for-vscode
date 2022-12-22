@@ -40,6 +40,32 @@ export function activate(context: vscode.ExtensionContext) {
 		evalWithAction('inspect');
 	});
 	context.subscriptions.push(disposable6);	
+
+	let disposable8 = vscode.languages.registerHoverProvider(
+		{ pattern: '**/*.sim*' }, {
+		provideHover: async (doc: vscode.TextDocument, pos: vscode.Position): Promise<vscode.Hover> => {
+			let range = doc.getWordRangeAtPosition(pos);			
+			let token = doc.getText(range);
+			// sometimes the range represents the full content; it will never match
+			if (!range?.isSingleLine) {
+				return new vscode.Hover('');
+			}
+			let response = await axios({
+				method: 'post',
+				url: 'http://localhost:9119/v1?debug=false&action=inspect',
+				data: token,
+				headers: { 'Content-Type': 'text/plain; charset=UTF-8' }
+			});
+			if (!response || !response.data || !response.data.MarkdownString) {
+				console.error("hover fail", response);
+				return new vscode.Hover('');
+			}
+			let ms = new vscode.MarkdownString(response.data.MarkdownString);
+			ms.isTrusted = true;
+			return new vscode.Hover(ms, range);
+		}
+	});
+	context.subscriptions.push(disposable8);	
 }
 
 // This method is called when your extension is deactivated
@@ -85,7 +111,7 @@ function sendActionWithText(action: string, line: number, text: string, rangeExe
 	}
 	axios({
 		method: 'post',
-		url: 'http://localhost:8888/v1/statements?debug=false&line=' + (line + 1) + '&action=' + action + '&file=' + activeEditor.document.fileName, // line is zero-based
+		url: 'http://localhost:9119/v1?debug=false&line=' + (line + 1) + '&action=' + action + '&file=' + activeEditor.document.fileName, // line is zero-based
 		data: text,
 		headers: { 'Content-Type': 'text/plain; charset=UTF-8' }
 	}).then((response: AxiosResponse<any>) => {

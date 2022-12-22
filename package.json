@@ -24,7 +24,8 @@
       {
         "id": "javascript",
         "extensions": [
-          ".sim"
+          ".sim",
+          ".simone"
         ],
         "aliases": [
           "Simone"
