@@ -27,7 +27,8 @@ const simoneOut = vscode.window.createOutputChannel("Simone");
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
+	
+	simoneOut.show();
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "simone-for-vscode" is now active!');
@@ -147,10 +148,13 @@ function sendActionWithText(action: string, line: number, text: string, rangeExe
 			return;
 		}
 		if (successResponseData.data !== '') {
+			simoneOut.append(successResponseData.data);
 			// replace with parsed version
 			successResponseData.data = JSON.parse(successResponseData.data);
+		} else {
+			simoneOut.append(successResponseData.error);
 		}
-		console.log(successResponseData);
+		console.log(successResponseData);		
 		if (success) {
 			success = successResponseData.error === ''
 		}
@@ -168,6 +172,6 @@ function sendActionWithText(action: string, line: number, text: string, rangeExe
 			}
 			activeEditor.setDecorations(executeOkDecorationType, []);
 			activeEditor.setDecorations(executeFailDecorationType, []);
-		}, 200);
+		}, 300);
 	});
 }

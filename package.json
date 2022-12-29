@@ -2,7 +2,7 @@
   "name": "simone-for-vscode",
   "displayName": "simone-for-vscode",
   "description": "scripting interface for the simone engine",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "publisher": "EMicklei",  
   "license": "SEE LICENSE IN LICENSE.txt",  
   "repository": {
@@ -65,8 +65,8 @@
     "keybindings": [
       {
         "command": "simone-for-vscode.eval",
-        "key": "ctrl+e",
-        "mac": "cmd+e"
+        "key": "ctrl+d",
+        "mac": "cmd+d"
       },
       {
         "command": "simone-for-vscode.evalAndInspect",
