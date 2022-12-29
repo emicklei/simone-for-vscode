@@ -2,7 +2,7 @@
   "name": "simone-for-vscode",
   "displayName": "simone-for-vscode",
   "description": "scripting interface for the simone engine",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "EMicklei",  
   "license": "SEE LICENSE IN LICENSE.txt",  
   "repository": {

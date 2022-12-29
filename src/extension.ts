@@ -52,15 +52,15 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			let response = await axios({
 				method: 'post',
-				url: 'http://localhost:9119/v1?debug=false&action=inspect',
+				url: 'http://localhost:9119/v1?debug=false&action=hover',
 				data: token,
 				headers: { 'Content-Type': 'text/plain; charset=UTF-8' }
 			});
-			if (!response || !response.data || !response.data.MarkdownString) {
+			if (!response || !response.data || !response.data.markdown) {
 				console.error("hover fail", response);
 				return new vscode.Hover('');
 			}
-			let ms = new vscode.MarkdownString(response.data.MarkdownString);
+			let ms = new vscode.MarkdownString(response.data.markdown);
 			ms.isTrusted = true;
 			return new vscode.Hover(ms, range);
 		}
@@ -146,19 +146,16 @@ function sendActionWithText(action: string, line: number, text: string, rangeExe
 			// not in editor
 			return;
 		}
+		if (successResponseData.data !== '') {
+			// replace with parsed version
+			successResponseData.data = JSON.parse(successResponseData.data);
+		}
+		console.log(successResponseData);
 		if (success) {
-			if (action === 'inspect') {
-				simoneOut.appendLine(successResponseData);
-				// console.log(successResponseData);
-				// if (successResponseData.object !== undefined && successResponseData.object !== null) {
-				// 	if (Object.keys(successResponseData.object).length > 0) {
-				// 		console.log(successResponseData.object);
-				// 	}
-				// }
-			}
-			if (action === 'eval') {
-				activeEditor.setDecorations(executeOkDecorationType, rangeExecuted);
-			}
+			success = successResponseData.error === ''
+		}
+		if (success) {
+			activeEditor.setDecorations(executeOkDecorationType, rangeExecuted);
 		} else {
 			activeEditor.setDecorations(executeFailDecorationType, rangeExecuted);
 		}
